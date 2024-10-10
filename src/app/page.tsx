@@ -1,9 +1,13 @@
-import { Button } from "@/components/ui/button";
+"use client";
+
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
 	return (
-		<main className="flex min-h-screen flex-col items-center justify-between p-24">
-			<Button>Shadcn Init</Button>
-		</main>
+		<>
+			<main className="max-w-7xl mx-auto flex flex-col gap-4 p-4 min-h-[92vh]">
+				<Navbar />
+			</main>
+		</>
 	);
 }
