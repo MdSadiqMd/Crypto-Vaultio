@@ -35,6 +35,10 @@ import {
     AlertDialogTrigger,
 } from "./ui/alert-dialog";
 
+/**
+ * Handles generating and managing Solana and Ethereum wallets.
+ * @returns A JSX Element that renders a component for generating and managing wallets.
+ */
 const WalletGenerator = () => {
     const [mnemonicWords, setMnemonicWords] = useState<string[]>(
         Array(12).fill(" ")
@@ -67,6 +71,10 @@ const WalletGenerator = () => {
         }
     }, []);
 
+    /**
+     * Handles deleting a wallet.
+     * @param index The index of the wallet to delete in the wallets array.
+     */
     const handleDeleteWallet = (index: number) => {
         const updatedWallets = wallets.filter((_, i) => i !== index);
         const updatedPathTypes = pathTypes.filter((_, i) => i !== index);
@@ -80,6 +88,10 @@ const WalletGenerator = () => {
         toast.success("Wallet deleted successfully!");
     };
 
+    /**
+     * Handles clearing all wallets, removing them from local storage, and resetting the component's state.
+     * @returns void
+     */
     const handleClearWallets = () => {
         localStorage.removeItem("wallets");
         localStorage.removeItem("mnemonics");
@@ -92,17 +104,33 @@ const WalletGenerator = () => {
         toast.success("All wallets cleared.");
     };
 
+    /**
+     * Copies the given content to the user's clipboard.
+     * @param content The content to copy.
+     */
     const copyToClipboard = (content: string) => {
         navigator.clipboard.writeText(content);
         toast.success("Copied to clipboard!");
     };
 
+    /**
+     * Toggles the visibility of a private key at the given index in the `visiblePrivateKeys` array.
+     * @param index The index of the private key to toggle.
+     * @returns void
+     */
     const togglePrivateKeyVisibility = (index: number) => {
         setVisiblePrivateKeys(
             visiblePrivateKeys.map((visible, i) => (i === index ? !visible : visible))
         );
     };
 
+    /**
+     * Generates a wallet from the given mnemonic and account index.
+     * @param pathType The BIP-44 path type of the wallet to generate.
+     * @param mnemonic The BIP-39 mnemonic to use for generating the wallet.
+     * @param accountIndex The account index of the wallet to generate.
+     * @returns The generated wallet, or null if there was an error.
+     */
     const generateWalletFromMnemonic = (
         pathType: string,
         mnemonic: string,
@@ -147,6 +175,13 @@ const WalletGenerator = () => {
         }
     };
 
+    /**
+     * Handles generating a wallet using the given mnemonic or generating a new one if none is provided.
+     * If a mnemonic is provided, it will be validated. If it is invalid, an error will be shown.
+     * If a mnemonic is not provided, a new one will be generated.
+     * The generated wallet will then be added to the local storage and the component's state.
+     * @returns void
+     */
     const handleGenerateWallet = () => {
         let mnemonic = mnemonicInput.trim();
 
@@ -179,6 +214,13 @@ const WalletGenerator = () => {
         }
     };
 
+    /**
+     * Handles adding a new wallet to the existing list of wallets.
+     * This function should only be called after a wallet has been generated using the handleGenerateWallet function.
+     * It will retrieve the mnemonic from the state and use it to generate a new wallet.
+     * The new wallet will then be added to the state and local storage.
+     * @returns void
+     */
     const handleAddWallet = () => {
         if (!mnemonicWords) {
             toast.error("No mnemonic found. Please generate a wallet first.");
